@@ -1,7 +1,5 @@
-const CACHE_NAME = 'paylog-v1';
+const CACHE_NAME = 'paylog-v2';
 const urlsToCache = [
-  '/',
-  '/login',
   '/sleep.png',
 ];
 
@@ -27,6 +25,19 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  if (request.destination === 'document') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          return response;
+        })
+        .catch(() => {
+          return caches.match('/login');
+        })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(request)
       .then((cachedResponse) => {
@@ -39,6 +50,10 @@ self.addEventListener('fetch', (event) => {
             return response;
           }
 
+          if (response.redirected) {
+            return response;
+          }
+
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(request, responseToCache);
@@ -48,9 +63,7 @@ self.addEventListener('fetch', (event) => {
         });
       })
       .catch(() => {
-        if (request.destination === 'document') {
-          return caches.match('/');
-        }
+        return fetch(request);
       })
   );
 });
@@ -65,7 +78,12 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
