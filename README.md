@@ -9,7 +9,7 @@ A Next.js 15 web application for tracking pay periods, shifts, and earnings. Bui
 - ✏️ **Manual Entry**: Create pay periods manually with custom shifts
 - 📈 **Charts & Analytics**: Visualize earnings with Recharts
 - 💾 **Backup & Restore**: Export and import your data as JSON
-- 🔒 **Access Control**: Protected by secret route key (no user accounts needed)
+- 🔒 **Authentication**: Email/password login system
 
 ## Tech Stack
 
@@ -53,14 +53,17 @@ Create a `.env.local` file in the root directory:
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-# Access Control - Choose a long random string
-ACCESS_KEY=superlongrandomstring
+# Authentication Credentials
+NEXT_PUBLIC_AUTH_EMAIL=your_email@example.com
+NEXT_PUBLIC_AUTH_PASSWORD=your_password
+AUTH_EMAIL=your_email@example.com
+AUTH_PASSWORD=your_password
 ```
 
 **Important**: 
 - Never commit `.env.local` to version control
-- The `ACCESS_KEY` should be a long, random string (e.g., use `openssl rand -hex 32`)
 - Keep your `SUPABASE_SERVICE_ROLE_KEY` secret - it has admin access
+- Use strong passwords for production deployments
 
 ### 4. Run Development Server
 
@@ -72,20 +75,7 @@ The app will be available at `http://localhost:3000`
 
 ### 5. Access the App
 
-Since the app uses secret route key protection, you must access it via:
-
-```
-http://localhost:3000/[ACCESS_KEY]/dashboard
-```
-
-Replace `[ACCESS_KEY]` with the value you set in `.env.local`.
-
-For example, if your `ACCESS_KEY` is `abc123xyz`, visit:
-```
-http://localhost:3000/abc123xyz/dashboard
-```
-
-Any other route will redirect to 404.
+You'll be redirected to the login page. Use the email and password you configured in your environment variables.
 
 ## Deployment
 
@@ -96,13 +86,13 @@ Any other route will redirect to 404.
 3. Add environment variables in Vercel dashboard:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `SUPABASE_SERVICE_ROLE_KEY`
-   - `ACCESS_KEY`
+   - `NEXT_PUBLIC_AUTH_EMAIL`
+   - `NEXT_PUBLIC_AUTH_PASSWORD`
+   - `AUTH_EMAIL`
+   - `AUTH_PASSWORD`
 4. Deploy!
 
-After deployment, access your app at:
-```
-https://your-domain.vercel.app/[ACCESS_KEY]/dashboard
-```
+After deployment, access your app at your Vercel URL and log in with your credentials.
 
 ### Other Platforms
 
@@ -119,7 +109,7 @@ Make sure to set all environment variables in your hosting platform.
 
 ### Uploading a PDF
 
-1. Navigate to `/[ACCESS_KEY]/upload`
+1. Navigate to `/upload` (after logging in)
 2. Select a PDF pay stub file
 3. Click "Parse PDF" to extract pay period and shifts
 4. Review the extracted data (you can edit dates if needed)
@@ -129,7 +119,7 @@ Make sure to set all environment variables in your hosting platform.
 
 ### Creating a Manual Pay Period
 
-1. Navigate to `/[ACCESS_KEY]/manual`
+1. Navigate to `/manual` (after logging in)
 2. Enter start and end dates
 3. Add shifts (date, time in, time out, hours)
 4. The app will auto-calculate hours if you provide times
@@ -138,13 +128,13 @@ Make sure to set all environment variables in your hosting platform.
 
 ### Viewing Pay Periods
 
-- **Dashboard**: `/[ACCESS_KEY]/dashboard` - Overview with stats and charts
+- **Dashboard**: `/dashboard` - Overview with stats and charts
 - **Pay Period Detail**: Click "View" on any pay period to see details
 - **Edit/Delete**: Available on the pay period detail page
 
 ### Settings
 
-Navigate to `/[ACCESS_KEY]/settings` to:
+Navigate to `/settings` to:
 - Update default hourly rate
 - Export data as JSON backup
 - Import data from JSON backup
@@ -177,9 +167,9 @@ If your PDF format differs, you may need to adjust the regex patterns in `lib/ut
 ## Security Notes
 
 - **Service Role Key**: This key has admin access to your Supabase database. Never expose it to the client.
-- **Access Key**: The `ACCESS_KEY` is the only protection for your app. Use a long, random string.
-- **RLS Disabled**: Row Level Security is disabled in the schema. The app relies on the secret route key for access control.
-- **No User Accounts**: This app has no authentication system. Anyone with the access key can access your data.
+- **Authentication**: The app uses email/password authentication. Use strong passwords for production.
+- **RLS Disabled**: Row Level Security is disabled in the schema. The app relies on authentication for access control.
+- **Credentials**: Store authentication credentials securely in environment variables, never in code.
 
 ## Troubleshooting
 
@@ -195,30 +185,31 @@ If your PDF format differs, you may need to adjust the regex patterns in `lib/ut
 - Check that you've run the schema SQL in Supabase
 - Ensure your Supabase project is active
 
-### Access Denied (404)
+### Login Issues
 
-- Verify your `ACCESS_KEY` environment variable is set
-- Ensure you're using the correct access key in the URL
-- Check that the route matches exactly: `/[ACCESS_KEY]/dashboard`
+- Verify your `AUTH_EMAIL` and `AUTH_PASSWORD` environment variables are set
+- Ensure both client-side (`NEXT_PUBLIC_*`) and server-side (`AUTH_*`) credentials match
+- Check that you're using the correct email and password
 
 ## Project Structure
 
 ```
 Paylog pro/
 ├── app/
-│   ├── [accessKey]/          # Protected routes
-│   │   ├── dashboard/        # Main dashboard
+│   ├── (protected)/         # Protected routes (require authentication)
+│   │   ├── dashboard/       # Main dashboard
 │   │   ├── upload/          # PDF upload page
 │   │   ├── manual/          # Manual pay period entry
 │   │   ├── settings/        # Settings & backup
 │   │   └── pay-period/[id]/ # Pay period detail
-│   ├── actions/              # Server actions
+│   ├── login/               # Login page
+│   ├── actions/             # Server actions
 │   ├── globals.css          # Global styles
 │   ├── layout.tsx           # Root layout
-│   └── page.tsx             # Root page (redirects)
+│   └── page.tsx             # Root page (redirects to login)
 ├── lib/
 │   ├── supabase/            # Supabase client
-│   └── utils/               # Utilities (PDF parser, etc.)
+│   └── utils/               # Utilities (PDF parser, auth, etc.)
 ├── supabase/
 │   └── schema.sql           # Database schema
 └── package.json
