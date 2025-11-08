@@ -39,11 +39,11 @@ export default function MonthlyChartWithSelector({ data }: MonthlyChartWithSelec
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-3 sm:mb-4">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900">
           Monthly Earnings
           {selectedMonth !== 'all' && (
-            <span className="ml-2 text-base font-normal text-gray-600">
+            <span className="ml-2 text-sm sm:text-base font-normal text-gray-600">
               ~ ${selectedMonthData.earnings.toFixed(2)}
             </span>
           )}
@@ -51,7 +51,7 @@ export default function MonthlyChartWithSelector({ data }: MonthlyChartWithSelec
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full sm:w-auto px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         >
           <option value="all">All Months</option>
           {availableMonths.map((month) => (
@@ -62,26 +62,25 @@ export default function MonthlyChartWithSelector({ data }: MonthlyChartWithSelec
         </select>
       </div>
       
-      {/* Stat cards when a month is selected */}
       {selectedMonth !== 'all' && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
           <div className="bg-gray-50 rounded-lg p-2">
             <p className="text-xs text-gray-600 mb-0.5">Actual</p>
-            <p className="text-base font-bold text-gray-900">${selectedMonthData.earnings.toFixed(2)}</p>
+            <p className="text-sm sm:text-base font-bold text-gray-900">${selectedMonthData.earnings.toFixed(2)}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-2">
             <p className="text-xs text-gray-600 mb-0.5">Expected</p>
-            <p className="text-base font-bold text-gray-900">${selectedMonthData.expected.toFixed(2)}</p>
+            <p className="text-sm sm:text-base font-bold text-gray-900">${selectedMonthData.expected.toFixed(2)}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-2">
             <p className="text-xs text-gray-600 mb-0.5">Difference</p>
-            <p className={`text-base font-bold ${selectedMonthData.earnings >= selectedMonthData.expected ? 'text-green-600' : 'text-red-600'}`}>
+            <p className={`text-sm sm:text-base font-bold ${selectedMonthData.earnings >= selectedMonthData.expected ? 'text-green-600' : 'text-red-600'}`}>
               ${(selectedMonthData.earnings - selectedMonthData.expected).toFixed(2)}
             </p>
           </div>
           <div className="bg-gray-50 rounded-lg p-2">
             <p className="text-xs text-gray-600 mb-0.5">%</p>
-            <p className={`text-base font-bold ${selectedMonthData.earnings >= selectedMonthData.expected ? 'text-green-600' : 'text-red-600'}`}>
+            <p className={`text-sm sm:text-base font-bold ${selectedMonthData.earnings >= selectedMonthData.expected ? 'text-green-600' : 'text-red-600'}`}>
               {selectedMonthData.expected > 0 
                 ? ((selectedMonthData.earnings / selectedMonthData.expected) * 100).toFixed(1)
                 : '0.0'
@@ -91,7 +90,7 @@ export default function MonthlyChartWithSelector({ data }: MonthlyChartWithSelec
         </div>
       )}
       
-      <div className="flex-1 min-h-0">
+      <div className="flex-1 min-h-0 w-full">
         <MonthlyChart data={filteredData} />
       </div>
     </div>

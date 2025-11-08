@@ -8,19 +8,20 @@ interface RecentPeriodsChartProps {
 
 export default function RecentPeriodsChart({ data }: RecentPeriodsChartProps) {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 60 }}>
+    <ResponsiveContainer width="100%" height={250}>
+      <BarChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 50 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
         <XAxis 
           dataKey="period" 
           angle={-45} 
           textAnchor="end" 
-          height={80}
-          tick={{ fontSize: 12, fill: '#6b7280' }}
+          height={70}
+          tick={{ fontSize: 10, fill: '#6b7280' }}
         />
         <YAxis 
-          tick={{ fontSize: 12, fill: '#6b7280' }}
+          tick={{ fontSize: 10, fill: '#6b7280' }}
           tickFormatter={(value) => `$${value}`}
+          width={50}
         />
         <Tooltip 
           formatter={(value: number) => `$${value.toFixed(2)}`}

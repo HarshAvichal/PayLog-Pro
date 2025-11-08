@@ -169,18 +169,17 @@ export default function ManualPage() {
           <h1 className="text-3xl font-bold text-gray-900">Manual Pay Period</h1>
         </div>
 
-        {/* Toast Notification */}
         {toast && (
-          <div className={`fixed top-4 right-4 z-50 animate-in slide-in-from-top-5 ${
+          <div className={`fixed top-3 sm:top-4 right-3 sm:right-4 left-3 sm:left-auto z-50 animate-in slide-in-from-top-5 ${
             toast.type === 'error' 
               ? 'bg-red-50 border border-red-200 text-red-800' 
               : 'bg-green-50 border border-green-200 text-green-800'
-          } rounded-lg shadow-lg p-4 max-w-md`}>
+          } rounded-lg shadow-lg p-3 sm:p-4 max-w-md sm:max-w-md`}>
             <div className="flex items-center justify-between gap-4">
-              <p className="font-medium">{toast.message}</p>
+              <p className="font-medium text-sm sm:text-base">{toast.message}</p>
               <button
                 onClick={() => setToast(null)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 text-lg sm:text-xl"
               >
                 ×
               </button>

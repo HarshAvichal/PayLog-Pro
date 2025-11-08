@@ -43,7 +43,7 @@ export default function EditForm({
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm sm:text-base font-medium transition"
       >
         Edit
       </button>
@@ -51,9 +51,9 @@ export default function EditForm({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 max-w-md w-full p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Pay Period</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 max-w-md w-full p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Edit Pay Period</h2>
 
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">

@@ -46,11 +46,11 @@ export default async function DashboardPage() {
   return (
     <>
       <DashboardHistoryManager />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 md:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-3 sm:p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="relative h-12 w-12 md:h-16 md:w-16 flex-shrink-0 bg-white rounded-lg shadow-sm p-1.5">
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-1 sm:mb-2">
+            <div className="relative h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 flex-shrink-0 bg-white rounded-lg shadow-sm p-1 sm:p-1.5">
               <Image
                 src="/sleep.png"
                 alt="Sleep Inn Logo"
@@ -59,69 +59,96 @@ export default async function DashboardPage() {
                 style={{ objectFit: 'contain' }}
               />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">PayLog Dashboard</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">PayLog Dashboard</h1>
           </div>
-          <p className="text-gray-600">Track your pay periods and earnings</p>
+          <p className="text-sm sm:text-base text-gray-600">Track your pay periods and earnings</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6">
-            <h3 className="text-sm font-medium text-gray-500 mb-1">Total Earnings</h3>
-            <p className="text-2xl font-bold text-gray-900">${totalEarnings.toFixed(2)}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Earnings</h3>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${totalEarnings.toFixed(2)}</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6">
-            <h3 className="text-sm font-medium text-gray-500 mb-1">Total Deductions</h3>
-            <p className="text-2xl font-bold text-red-600">-${totalDeductions.toFixed(2)}</p>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Deductions</h3>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">-${totalDeductions.toFixed(2)}</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6">
-            <h3 className="text-sm font-medium text-gray-500 mb-1">Net Earnings</h3>
-            <p className="text-2xl font-bold text-gray-900">${netEarnings.toFixed(2)}</p>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Net Earnings</h3>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${netEarnings.toFixed(2)}</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6">
-            <h3 className="text-sm font-medium text-gray-500 mb-1">Total Expected</h3>
-            <p className="text-2xl font-bold text-gray-900">${totalExpected.toFixed(2)}</p>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Expected</h3>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${totalExpected.toFixed(2)}</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6">
-            <h3 className="text-sm font-medium text-gray-500 mb-1">Total Hours</h3>
-            <p className="text-2xl font-bold text-gray-900">{totalHours.toFixed(1)}</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 items-stretch">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6 flex flex-col">
-            <MonthlyChartWithSelector data={monthlyChartData} />
-          </div>
-
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6 flex flex-col">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Pay Periods</h2>
-            <div className="flex-1">
-              <RecentPeriodsChart data={recentPeriods} />
-            </div>
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6 col-span-2 sm:col-span-1">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Hours</h3>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">{totalHours.toFixed(1)}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-2 mb-4 md:hidden">
           <Link
             href="/upload"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg text-center transition"
+            className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-2.5 px-4 rounded-lg text-center transition text-sm"
           >
             Upload PDF
           </Link>
           <Link
             href="/manual"
-            className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg text-center transition"
+            className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-medium py-2.5 px-4 rounded-lg text-center transition text-sm"
           >
-            Manual Pay Period
+            Manual Entry
           </Link>
           <Link
             href="/pay-periods"
-            className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg text-center transition"
+            className="bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2.5 px-4 rounded-lg text-center transition text-sm"
           >
-            View All Pay Periods
+            All Periods
           </Link>
           <Link
             href="/settings"
-            className="bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-lg text-center transition"
+            className="bg-gray-600 hover:bg-gray-700 active:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg text-center transition text-sm"
+          >
+            Settings
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6 md:mb-8 items-stretch">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6 flex flex-col min-h-[300px] sm:min-h-[350px]">
+            <MonthlyChartWithSelector data={monthlyChartData} />
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6 flex flex-col min-h-[300px] sm:min-h-[350px]">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Recent Pay Periods</h2>
+            <div className="flex-1 min-h-0">
+              <RecentPeriodsChart data={recentPeriods} />
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden md:grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
+          <Link
+            href="/upload"
+            className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-center transition text-sm sm:text-base"
+          >
+            Upload PDF
+          </Link>
+          <Link
+            href="/manual"
+            className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-medium py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-center transition text-sm sm:text-base"
+          >
+            Manual Entry
+          </Link>
+          <Link
+            href="/pay-periods"
+            className="bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-center transition text-sm sm:text-base"
+          >
+            All Periods
+          </Link>
+          <Link
+            href="/settings"
+            className="bg-gray-600 hover:bg-gray-700 active:bg-gray-800 text-white font-medium py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-center transition text-sm sm:text-base"
           >
             Settings
           </Link>

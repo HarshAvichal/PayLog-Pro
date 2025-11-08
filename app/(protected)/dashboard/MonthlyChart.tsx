@@ -8,16 +8,20 @@ interface MonthlyChartProps {
 
 export default function MonthlyChart({ data }: MonthlyChartProps) {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+    <ResponsiveContainer width="100%" height={250}>
+      <LineChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
         <XAxis 
           dataKey="month" 
-          tick={{ fontSize: 12, fill: '#6b7280' }}
+          tick={{ fontSize: 10, fill: '#6b7280' }}
+          angle={-45}
+          textAnchor="end"
+          height={60}
         />
         <YAxis 
-          tick={{ fontSize: 12, fill: '#6b7280' }}
+          tick={{ fontSize: 10, fill: '#6b7280' }}
           tickFormatter={(value) => `$${value}`}
+          width={50}
         />
         <Tooltip 
           formatter={(value: number) => `$${value.toFixed(2)}`}
