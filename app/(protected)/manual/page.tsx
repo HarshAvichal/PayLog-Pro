@@ -83,48 +83,103 @@ export default function ManualPage() {
   };
 
   const handleSave = async () => {
-    if (!startDate) {
-      setError('Please fill in start date');
+    const validShifts = shifts.filter((s) => s.date && s.timeIn && s.timeOut);
+    const actualPayValue = actualPay ? parseFloat(actualPay) : null;
+    
+    const invalidDeductions = deductions.filter((d) => {
+      const hasSomeFields = d.date || d.amount || d.reason;
+      const hasAllFields = d.date && d.amount && d.reason;
+      return hasSomeFields && !hasAllFields;
+    });
+
+    if (invalidDeductions.length > 0) {
+      setError('Please fill in all fields (date, amount, and reason) for all deductions, or remove incomplete deductions');
       return;
     }
 
-    const validShifts = shifts.filter((s) => s.date && s.timeIn && s.timeOut);
-    
-    if (validShifts.length === 0 && !actualPay) {
-      setError('Please add at least one shift or enter actual pay');
-      return;
+    const validDeductions = deductions.filter((d) => {
+      const hasDate = d.date && d.date.trim() !== '';
+      const hasAmount = d.amount && d.amount.trim() !== '';
+      const hasReason = d.reason && d.reason.trim() !== '';
+      return hasDate && hasAmount && hasReason;
+    });
+
+    if (validShifts.length > 0) {
+      if (!startDate) {
+        setError('Please fill in start date (required when adding shifts)');
+        return;
+      }
+    } else {
+      if (validDeductions.length === 0 && !actualPayValue) {
+        setError('Please add at least one shift, enter actual pay, or add deductions');
+        return;
+      }
+      
+      if (actualPayValue && !startDate && validDeductions.length === 0) {
+        setError('Please fill in start date (required when entering actual pay without deductions)');
+        return;
+      }
     }
 
     setLoading(true);
     setError(null);
 
     try {
-      const finalEndDate = endDate || startDate;
+      let finalStartDate = startDate;
+      let finalEndDate = endDate || startDate;
+
+      if (!finalStartDate && validDeductions.length > 0) {
+        const deductionDates = validDeductions
+          .map(d => d.date?.trim())
+          .filter((date): date is string => Boolean(date) && date !== '')
+          .sort();
+        if (deductionDates.length > 0) {
+          finalStartDate = deductionDates[0];
+          finalEndDate = endDate || deductionDates[deductionDates.length - 1] || finalStartDate;
+        }
+      }
+
+      if (!finalStartDate) {
+        if (validDeductions.length > 0) {
+          setError('Unable to determine pay period dates from deductions. Please fill in the Pay Period Start Date field.');
+        } else if (validShifts.length === 0 && !actualPayValue) {
+          setError('Please add at least one shift, enter actual pay, or add deductions');
+        } else {
+          setError('Please fill in start date');
+        }
+        setLoading(false);
+        return;
+      }
 
       const totalHours = validShifts.length > 0 
         ? validShifts.reduce((sum, shift) => sum + shift.hours, 0)
         : 0;
       const expectedPay = totalHours > 0 ? totalHours * hourlyRate : 0;
-      const actualPayValue = actualPay ? parseFloat(actualPay) : undefined;
+      const actualPayValueForSave = actualPayValue ? actualPayValue : undefined;
 
-      const finalExpectedPay = validShifts.length === 0 && actualPayValue 
-        ? actualPayValue 
+      const finalExpectedPay = validShifts.length === 0 && actualPayValueForSave 
+        ? actualPayValueForSave 
         : expectedPay;
 
       const result = await createPayPeriod({
-        startDate,
+        startDate: finalStartDate,
         endDate: finalEndDate,
         totalHours,
         expectedPay: finalExpectedPay,
-        actualPay: actualPayValue,
+        actualPay: actualPayValueForSave,
         notes: notes || undefined,
         shifts: validShifts,
       });
 
       if (result.success && result.data) {
         if (deductions.length > 0) {
-          const validDeductions = deductions.filter((d) => d.date && d.amount && d.reason);
-          for (const deduction of validDeductions) {
+          const deductionsToSave = deductions.filter((d) => {
+            const hasDate = d.date && d.date.trim() !== '';
+            const hasAmount = d.amount && d.amount.trim() !== '';
+            const hasReason = d.reason && d.reason.trim() !== '';
+            return hasDate && hasAmount && hasReason;
+          });
+          for (const deduction of deductionsToSave) {
             const amount = parseFloat(deduction.amount);
             if (!isNaN(amount) && amount > 0) {
               await createDeduction(result.data.id, {
@@ -197,14 +252,13 @@ export default function ManualPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Start Date *
+                Pay Period Start Date {validShifts.length > 0 ? '*' : '(for shifts)'}
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
-                required
               />
             </div>
             <div>
