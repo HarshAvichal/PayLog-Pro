@@ -232,7 +232,7 @@ export async function getAllPayPeriods() {
       .from('pay_periods')
       .select(`
         *,
-        deductions (id, amount)
+        deductions (id, amount, reason)
       `)
       .order('start_date', { ascending: false });
 
@@ -245,10 +245,12 @@ export async function getAllPayPeriods() {
         (sum: number, d: any) => sum + Math.abs(d.amount),
         0
       );
+      const deductionReasons = (pp.deductions || []).map((d: any) => d.reason).filter(Boolean);
       return {
         ...pp,
         deductions_count: pp.deductions?.length || 0,
         deductions_total: deductionsTotal,
+        deduction_reasons: deductionReasons,
       };
     });
 

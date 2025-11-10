@@ -20,6 +20,7 @@ interface PayPeriod {
   notes: string | null;
   deductions_count?: number;
   deductions_total?: number;
+  deduction_reasons?: string[];
 }
 
 export default function PayPeriodsTable({
@@ -404,32 +405,39 @@ export default function PayPeriodsTable({
                   key={pp.id} 
                   className={`${rowBgColor} hover:bg-opacity-80 transition-colors`}
                 >
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-[#333333] border-b border-gray-100">
-                    <Link
-                      href={`/pay-period/${pp.id}`}
-                      className={`font-medium ${
-                        hasDeductions 
-                          ? 'text-red-700 hover:text-red-900' 
-                          : 'text-[#2C475E] hover:text-[#1a2f3f]'
-                      }`}
-                    >
-                      {(() => {
-                        const start = parseISO(pp.start_date);
-                        const end = parseISO(pp.end_date);
-                        
-                        if (start.getTime() === end.getTime()) {
-                          return format(start, 'MMM d, yyyy');
-                        }
-                        
-                        const startYear = start.getFullYear();
-                        const endYear = end.getFullYear();
-                        
-                        if (startYear !== endYear) {
-                          return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
-                        }
-                        return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
-                      })()}
-                    </Link>
+                  <td className="px-4 md:px-6 py-4 text-sm text-[#333333] border-b border-gray-100">
+                    <div className="flex flex-col">
+                      <Link
+                        href={`/pay-period/${pp.id}`}
+                        className={`font-medium ${
+                          hasDeductions 
+                            ? 'text-red-700 hover:text-red-900' 
+                            : 'text-[#2C475E] hover:text-[#1a2f3f]'
+                        }`}
+                      >
+                        {(() => {
+                          const start = parseISO(pp.start_date);
+                          const end = parseISO(pp.end_date);
+                          
+                          if (start.getTime() === end.getTime()) {
+                            return format(start, 'MMM d, yyyy');
+                          }
+                          
+                          const startYear = start.getFullYear();
+                          const endYear = end.getFullYear();
+                          
+                          if (startYear !== endYear) {
+                            return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+                          }
+                          return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                        })()}
+                      </Link>
+                      {hasDeductions && pp.deduction_reasons && pp.deduction_reasons.length > 0 && (
+                        <span className="text-xs text-red-600 mt-1">
+                          {pp.deduction_reasons.join(', ')}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-[#333333] border-b border-gray-100">
                     {pp.total_hours?.toFixed(1) || '0.0'}
@@ -459,11 +467,16 @@ export default function PayPeriodsTable({
                         onClick={() => {
                           const start = parseISO(pp.start_date);
                           const end = parseISO(pp.end_date);
-                          const startYear = start.getFullYear();
-                          const endYear = end.getFullYear();
-                          const periodString = startYear !== endYear
-                            ? `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`
-                            : `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                          let periodString;
+                          if (start.getTime() === end.getTime()) {
+                            periodString = format(start, 'MMM d, yyyy');
+                          } else {
+                            const startYear = start.getFullYear();
+                            const endYear = end.getFullYear();
+                            periodString = startYear !== endYear
+                              ? `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`
+                              : `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                          }
                           handleDeleteClick(pp.id, periodString);
                         }}
                         disabled={deletingId === pp.id}
@@ -511,26 +524,38 @@ export default function PayPeriodsTable({
                   className={`${cardBgColor} p-4`}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <Link
-                      href={`/pay-period/${pp.id}`}
-                      className={`flex-1 font-medium ${
-                        hasDeductions 
-                          ? 'text-red-700' 
-                          : 'text-[#2C475E]'
-                      }`}
-                    >
-                      {(() => {
-                        const start = parseISO(pp.start_date);
-                        const end = parseISO(pp.end_date);
-                        const startYear = start.getFullYear();
-                        const endYear = end.getFullYear();
-                        
-                        if (startYear !== endYear) {
-                          return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
-                        }
-                        return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
-                      })()}
-                    </Link>
+                    <div className="flex-1">
+                      <Link
+                        href={`/pay-period/${pp.id}`}
+                        className={`font-medium ${
+                          hasDeductions 
+                            ? 'text-red-700' 
+                            : 'text-[#2C475E]'
+                        }`}
+                      >
+                        {(() => {
+                          const start = parseISO(pp.start_date);
+                          const end = parseISO(pp.end_date);
+                          
+                          if (start.getTime() === end.getTime()) {
+                            return format(start, 'MMM d, yyyy');
+                          }
+                          
+                          const startYear = start.getFullYear();
+                          const endYear = end.getFullYear();
+                          
+                          if (startYear !== endYear) {
+                            return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+                          }
+                          return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                        })()}
+                      </Link>
+                      {hasDeductions && pp.deduction_reasons && pp.deduction_reasons.length > 0 && (
+                        <div className="text-xs text-red-600 mt-1">
+                          {pp.deduction_reasons.join(', ')}
+                        </div>
+                      )}
+                    </div>
                     <div className="flex items-center gap-3 ml-3">
                       <Link
                         href={`/pay-period/${pp.id}`}
@@ -543,11 +568,16 @@ export default function PayPeriodsTable({
                         onClick={() => {
                           const start = parseISO(pp.start_date);
                           const end = parseISO(pp.end_date);
-                          const startYear = start.getFullYear();
-                          const endYear = end.getFullYear();
-                          const periodString = startYear !== endYear
-                            ? `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`
-                            : `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                          let periodString;
+                          if (start.getTime() === end.getTime()) {
+                            periodString = format(start, 'MMM d, yyyy');
+                          } else {
+                            const startYear = start.getFullYear();
+                            const endYear = end.getFullYear();
+                            periodString = startYear !== endYear
+                              ? `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`
+                              : `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                          }
                           handleDeleteClick(pp.id, periodString);
                         }}
                         disabled={deletingId === pp.id}
