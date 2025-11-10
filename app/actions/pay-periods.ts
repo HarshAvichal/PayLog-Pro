@@ -1,7 +1,7 @@
 'use server';
 
 import { createServerClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_noStore } from 'next/cache';
 import { z } from 'zod';
 
 const payPeriodSchema = z.object({
@@ -225,6 +225,8 @@ export async function deletePayPeriod(id: string) {
 }
 
 export async function getAllPayPeriods() {
+  unstable_noStore();
+  
   try {
     const supabase = createServerClient();
 

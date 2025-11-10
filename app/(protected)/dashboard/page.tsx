@@ -3,6 +3,7 @@ import { getSettings } from '@/app/actions/settings';
 import Link from 'next/link';
 import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
+import { unstable_noStore } from 'next/cache';
 import MonthlyChartWithSelector from './MonthlyChartWithSelector';
 import RecentPeriodsChart from './RecentPeriodsChart';
 import DashboardHistoryManager from './DashboardHistoryManager';
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function DashboardPage() {
+  unstable_noStore();
   const [payPeriodsResult, settingsResult] = await Promise.all([
     getAllPayPeriods(),
     getSettings(),
