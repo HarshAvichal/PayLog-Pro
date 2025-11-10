@@ -126,7 +126,9 @@ export default function PayPeriodsTable({
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((pp) => {
         const notes = (pp.notes || '').toLowerCase();
-        return notes.includes(query);
+        const deductionReasons = ((pp as any).deduction_reasons || []).join(' ').toLowerCase();
+        const periodDate = format(parseISO(pp.start_date), 'MMM d, yyyy').toLowerCase();
+        return notes.includes(query) || deductionReasons.includes(query) || periodDate.includes(query);
       });
     }
 
@@ -208,7 +210,7 @@ export default function PayPeriodsTable({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by notes..."
+              placeholder="Search by notes, deduction reasons, or dates..."
               disabled={showLatest}
               className={`w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                 showLatest ? 'opacity-50 cursor-not-allowed bg-gray-100' : ''
