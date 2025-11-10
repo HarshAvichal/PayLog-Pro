@@ -159,18 +159,12 @@ export default function ManualPage() {
       let actualPayValueForSave = actualPayValue ? actualPayValue : undefined;
       let finalExpectedPay = expectedPay;
 
-      if (validShifts.length === 0 && !actualPayValue && validDeductions.length > 0) {
-        const deductionTotal = validDeductions.reduce((sum, d) => {
-          const amount = parseFloat(d.amount);
-          return sum + (isNaN(amount) ? 0 : amount);
-        }, 0);
-        if (deductionTotal > 0) {
-          actualPayValueForSave = deductionTotal;
-          finalExpectedPay = deductionTotal;
-        }
-      } else if (validShifts.length === 0 && actualPayValueForSave) {
+      if (validShifts.length === 0 && actualPayValueForSave) {
         finalExpectedPay = actualPayValueForSave;
       }
+      
+      // Note: Deductions are stored separately and will be subtracted from earnings in the dashboard
+      // We don't set actualPay to deduction total - deductions are handled independently
 
       const result = await createPayPeriod({
         startDate: finalStartDate,
