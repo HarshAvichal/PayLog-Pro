@@ -39,6 +39,7 @@ export async function createDeduction(
     }
 
     revalidatePath('/');
+    revalidatePath('/dashboard');
     return { success: true, data: deduction };
   } catch (error) {
     return {
@@ -76,6 +77,7 @@ export async function updateDeduction(
     }
 
     revalidatePath('/');
+    revalidatePath('/dashboard');
     return { success: true, data: deduction };
   } catch (error) {
     return {
@@ -99,6 +101,7 @@ export async function deleteDeduction(id: string) {
     }
 
     revalidatePath('/');
+    revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
     return {
