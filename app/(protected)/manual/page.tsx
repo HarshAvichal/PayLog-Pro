@@ -155,11 +155,22 @@ export default function ManualPage() {
         ? validShifts.reduce((sum, shift) => sum + shift.hours, 0)
         : 0;
       const expectedPay = totalHours > 0 ? totalHours * hourlyRate : 0;
-      const actualPayValueForSave = actualPayValue ? actualPayValue : undefined;
+      
+      let actualPayValueForSave = actualPayValue ? actualPayValue : undefined;
+      let finalExpectedPay = expectedPay;
 
-      const finalExpectedPay = validShifts.length === 0 && actualPayValueForSave 
-        ? actualPayValueForSave 
-        : expectedPay;
+      if (validShifts.length === 0 && !actualPayValue && validDeductions.length > 0) {
+        const deductionTotal = validDeductions.reduce((sum, d) => {
+          const amount = parseFloat(d.amount);
+          return sum + (isNaN(amount) ? 0 : amount);
+        }, 0);
+        if (deductionTotal > 0) {
+          actualPayValueForSave = deductionTotal;
+          finalExpectedPay = deductionTotal;
+        }
+      } else if (validShifts.length === 0 && actualPayValueForSave) {
+        finalExpectedPay = actualPayValueForSave;
+      }
 
       const result = await createPayPeriod({
         startDate: finalStartDate,
