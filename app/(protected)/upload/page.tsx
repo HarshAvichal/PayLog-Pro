@@ -80,6 +80,12 @@ export default function UploadPage() {
   const handleSave = async () => {
     if (!parsedData) return;
 
+    if (!actualPay || actualPay.trim() === '') {
+      setToast({ message: 'Please enter the actual pay amount', type: 'error' });
+      setTimeout(() => setToast(null), 5000);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -320,7 +326,7 @@ export default function UploadPage() {
 
               <div className="mb-3 sm:mb-4">
                 <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-                  Actual Pay (optional)
+                  Actual Pay *
                 </label>
                 <input
                   type="number"
