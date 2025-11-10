@@ -230,27 +230,60 @@ export async function getAllPayPeriods() {
   try {
     const supabase = createServerClient();
 
-    const { data, error } = await supabase
+    // Fetch pay periods
+    const { data: payPeriodsData, error: periodsError } = await supabase
       .from('pay_periods')
-      .select(`
-        *,
-        deductions (id, amount, reason)
-      `)
+      .select('*')
       .order('start_date', { ascending: false });
 
-    if (error) {
-      throw new Error(`Failed to fetch pay periods: ${error.message}`);
+    if (periodsError) {
+      console.error('Error fetching pay periods:', periodsError);
+      throw new Error(`Failed to fetch pay periods: ${periodsError.message}`);
     }
 
-    const payPeriodsWithDeductions = (data || []).map((pp: any) => {
-      const deductionsTotal = (pp.deductions || []).reduce(
+    if (!payPeriodsData || payPeriodsData.length === 0) {
+      return { success: true, data: [] };
+    }
+
+    // Fetch all deductions
+    const { data: allDeductions, error: deductionsError } = await supabase
+      .from('deductions')
+      .select('*');
+
+    if (deductionsError) {
+      console.error('Error fetching deductions:', deductionsError);
+      // Continue without deductions if there's an error
+    }
+
+    // Group deductions by pay_period_id
+    const deductionsByPayPeriod = (allDeductions || []).reduce((acc: any, d: any) => {
+      if (!acc[d.pay_period_id]) {
+        acc[d.pay_period_id] = [];
+      }
+      acc[d.pay_period_id].push(d);
+      return acc;
+    }, {});
+
+    const payPeriodsWithDeductions = payPeriodsData.map((pp: any) => {
+      const deductions = deductionsByPayPeriod[pp.id] || [];
+      const deductionsTotal = deductions.reduce(
         (sum: number, d: any) => sum + Math.abs(d.amount),
         0
       );
-      const deductionReasons = (pp.deductions || []).map((d: any) => d.reason).filter(Boolean);
+      const deductionReasons = deductions.map((d: any) => d.reason).filter(Boolean);
+      
+      // Debug: Log deduction calculation
+      if (process.env.NODE_ENV === 'development' && deductions.length > 0) {
+        console.log(`Pay Period ${pp.id} - Deductions:`, {
+          count: deductions.length,
+          deductions: deductions.map((d: any) => ({ amount: d.amount, absAmount: Math.abs(d.amount) })),
+          total: deductionsTotal
+        });
+      }
+      
       return {
         ...pp,
-        deductions_count: pp.deductions?.length || 0,
+        deductions_count: deductions.length,
         deductions_total: deductionsTotal,
         deduction_reasons: deductionReasons,
       };

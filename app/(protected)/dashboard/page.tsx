@@ -21,12 +21,33 @@ export default async function DashboardPage() {
   const payPeriods = payPeriodsResult.success ? payPeriodsResult.data : [];
   const hourlyRate = settingsResult.success ? settingsResult.data?.hourly_rate || 15 : 15;
 
+  // Debug: Log pay periods with deductions
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Dashboard - Pay Periods:', JSON.stringify(payPeriods.map(pp => ({
+      id: pp.id,
+      start_date: pp.start_date,
+      deductions_total: (pp as any).deductions_total,
+      deductions_count: (pp as any).deductions_count,
+      has_deductions: (pp as any).deductions
+    })), null, 2));
+  }
+
   const totalEarnings = payPeriods.reduce((sum, pp) => sum + (pp.actual_pay || pp.expected_pay || 0), 0);
   const totalExpected = payPeriods.reduce((sum, pp) => sum + (pp.expected_pay || 0), 0);
   const totalDifference = payPeriods.reduce((sum, pp) => sum + (pp.difference || 0), 0);
   const totalHours = payPeriods.reduce((sum, pp) => sum + (pp.total_hours || 0), 0);
   const totalDeductions = payPeriods.reduce((sum, pp) => sum + ((pp as any).deductions_total || 0), 0);
   const netEarnings = totalEarnings - totalDeductions;
+
+  // Debug: Log calculated totals
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Dashboard - Totals:', {
+      totalEarnings,
+      totalDeductions,
+      netEarnings,
+      payPeriodsCount: payPeriods.length
+    });
+  }
 
   const monthlyData: Record<string, { month: string; earnings: number; expected: number }> = {};
   payPeriods.forEach((pp) => {
