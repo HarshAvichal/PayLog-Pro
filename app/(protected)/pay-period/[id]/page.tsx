@@ -63,8 +63,16 @@ export default async function PayPeriodPage({
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0 mb-4 sm:mb-6">
             <div>
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2">
-                {format(parseISO(payPeriod.start_date), 'MMM d')} -{' '}
-                {format(parseISO(payPeriod.end_date), 'MMM d, yyyy')}
+                {(() => {
+                  const start = parseISO(payPeriod.start_date);
+                  const end = parseISO(payPeriod.end_date);
+                  
+                  if (start.getTime() === end.getTime()) {
+                    return format(start, 'MMM d, yyyy');
+                  }
+                  
+                  return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+                })()}
               </h2>
               <p className="text-xs sm:text-sm text-gray-500">
                 Created {format(parseISO(payPeriod.created_at), 'MMM d, yyyy')}

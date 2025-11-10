@@ -23,7 +23,16 @@ export default function PayPeriodRow({ payPeriod }: PayPeriodRowProps) {
           href={`/pay-period/${payPeriod.id}`}
           className="text-blue-600 hover:text-blue-800 font-medium block"
         >
-          {format(parseISO(payPeriod.start_date), 'MMM d')} - {format(parseISO(payPeriod.end_date), 'MMM d, yyyy')}
+          {(() => {
+            const start = parseISO(payPeriod.start_date);
+            const end = parseISO(payPeriod.end_date);
+            
+            if (start.getTime() === end.getTime()) {
+              return format(start, 'MMM d, yyyy');
+            }
+            
+            return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+          })()}
         </Link>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">

@@ -416,6 +416,11 @@ export default function PayPeriodsTable({
                       {(() => {
                         const start = parseISO(pp.start_date);
                         const end = parseISO(pp.end_date);
+                        
+                        if (start.getTime() === end.getTime()) {
+                          return format(start, 'MMM d, yyyy');
+                        }
+                        
                         const startYear = start.getFullYear();
                         const endYear = end.getFullYear();
                         
