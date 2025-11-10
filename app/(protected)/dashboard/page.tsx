@@ -7,6 +7,9 @@ import MonthlyChartWithSelector from './MonthlyChartWithSelector';
 import RecentPeriodsChart from './RecentPeriodsChart';
 import DashboardHistoryManager from './DashboardHistoryManager';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function DashboardPage() {
   const [payPeriodsResult, settingsResult] = await Promise.all([
     getAllPayPeriods(),

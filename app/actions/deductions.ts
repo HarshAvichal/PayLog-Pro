@@ -38,8 +38,9 @@ export async function createDeduction(
       throw new Error(`Failed to create deduction: ${error.message}`);
     }
 
-    revalidatePath('/');
-    revalidatePath('/dashboard');
+    revalidatePath('/', 'layout');
+    revalidatePath('/dashboard', 'layout');
+    revalidatePath('/pay-periods', 'layout');
     return { success: true, data: deduction };
   } catch (error) {
     return {
@@ -76,8 +77,9 @@ export async function updateDeduction(
       throw new Error(`Failed to update deduction: ${error.message}`);
     }
 
-    revalidatePath('/');
-    revalidatePath('/dashboard');
+    revalidatePath('/', 'layout');
+    revalidatePath('/dashboard', 'layout');
+    revalidatePath('/pay-periods', 'layout');
     return { success: true, data: deduction };
   } catch (error) {
     return {
@@ -100,8 +102,9 @@ export async function deleteDeduction(id: string) {
       throw new Error(`Failed to delete deduction: ${error.message}`);
     }
 
-    revalidatePath('/');
-    revalidatePath('/dashboard');
+    revalidatePath('/', 'layout');
+    revalidatePath('/dashboard', 'layout');
+    revalidatePath('/pay-periods', 'layout');
     return { success: true };
   } catch (error) {
     return {
