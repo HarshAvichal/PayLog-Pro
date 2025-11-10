@@ -32,7 +32,20 @@ export default async function DashboardPage() {
     })), null, 2));
   }
 
-  const totalEarnings = payPeriods.reduce((sum, pp) => sum + (pp.actual_pay || pp.expected_pay || 0), 0);
+  // Calculate total earnings, but exclude deduction-only periods (where actual_pay equals deductions_total)
+  // to avoid double-counting in the net earnings calculation
+  const totalEarnings = payPeriods.reduce((sum, pp) => {
+    const actualPay = pp.actual_pay || pp.expected_pay || 0;
+    const deductionsTotal = (pp as any).deductions_total || 0;
+    const isDeductionOnly = pp.total_hours === 0 && deductionsTotal > 0 && Math.abs(actualPay - deductionsTotal) < 0.01;
+    
+    // For deduction-only periods, don't add to total earnings (they're just deductions, not earnings)
+    if (isDeductionOnly) {
+      return sum;
+    }
+    return sum + actualPay;
+  }, 0);
+  
   const totalExpected = payPeriods.reduce((sum, pp) => sum + (pp.expected_pay || 0), 0);
   const totalDifference = payPeriods.reduce((sum, pp) => sum + (pp.difference || 0), 0);
   const totalHours = payPeriods.reduce((sum, pp) => sum + (pp.total_hours || 0), 0);
