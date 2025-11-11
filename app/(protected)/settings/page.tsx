@@ -132,7 +132,7 @@ export default function SettingsPage() {
                   step="0.01"
                   value={hourlyRate}
                   onChange={(e) => setHourlyRate(parseFloat(e.target.value) || 0)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
                 />
               </div>
               <div className="flex items-end">
