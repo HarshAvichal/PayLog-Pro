@@ -39,7 +39,11 @@ export default function UploadPage() {
       setError(null);
       setParsedData(null);
     } else {
-      setError('Please select a PDF file');
+      setToast({ 
+        message: 'Please select a PDF file', 
+        type: 'error' 
+      });
+      setTimeout(() => setToast(null), 5000);
     }
   };
 
@@ -69,10 +73,18 @@ export default function UploadPage() {
       if (result.success && result.data) {
         setParsedData(result.data);
       } else {
-        setError(result.error || 'Failed to parse PDF');
+        setToast({ 
+          message: result.error || 'Failed to parse PDF. Please check the PDF format matches the expected timecard format.', 
+          type: 'error' 
+        });
+        setTimeout(() => setToast(null), 5000);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to parse PDF');
+      setToast({ 
+        message: err instanceof Error ? err.message : 'Failed to parse PDF. Please check the PDF format matches the expected timecard format.', 
+        type: 'error' 
+      });
+      setTimeout(() => setToast(null), 5000);
     } finally {
       setLoading(false);
     }
@@ -197,12 +209,6 @@ export default function UploadPage() {
             >
               {loading ? 'Parsing...' : 'Parse PDF'}
             </button>
-          )}
-
-          {error && (
-            <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              {error}
-            </div>
           )}
         </div>
 
