@@ -6,6 +6,7 @@ import { getSettings, updateHourlyRate } from '@/app/actions/settings';
 import { exportBackup, importBackup } from '@/app/actions/backup';
 import { logout } from '@/lib/utils/auth';
 import Link from 'next/link';
+import { HiArrowLeft } from 'react-icons/hi';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -106,14 +107,15 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Link
             href="/dashboard"
-            className="text-blue-600 hover:text-blue-800 mb-4 inline-block"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-2 sm:mb-4 px-3 py-1.5 sm:py-2 rounded-lg hover:bg-blue-50 transition-colors text-sm sm:text-base font-medium group"
           >
-            ← Back to Dashboard
+            <HiArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:-translate-x-0.5" />
+            Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Settings</h1>
         </div>
 
         <div className="space-y-6">

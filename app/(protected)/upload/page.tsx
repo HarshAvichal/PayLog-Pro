@@ -7,6 +7,7 @@ import { createPayPeriod } from '@/app/actions/pay-periods';
 import { getSettings } from '@/app/actions/settings';
 import { parsePDF } from '@/app/actions/pdf';
 import Link from 'next/link';
+import { HiArrowLeft } from 'react-icons/hi';
 
 export default function UploadPage() {
   const router = useRouter();
@@ -137,9 +138,10 @@ export default function UploadPage() {
         <div className="mb-4 sm:mb-6">
           <Link
             href="/dashboard"
-            className="text-blue-600 hover:text-blue-800 mb-2 sm:mb-4 inline-block text-sm sm:text-base"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-2 sm:mb-4 px-3 py-1.5 sm:py-2 rounded-lg hover:bg-blue-50 transition-colors text-sm sm:text-base font-medium group"
           >
-            ← Back to Dashboard
+            <HiArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:-translate-x-0.5" />
+            Back to Dashboard
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Upload Pay Period PDF</h1>
         </div>
