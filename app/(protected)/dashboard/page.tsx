@@ -46,7 +46,6 @@ export default async function DashboardPage() {
     return sum + actualPay;
   }, 0);
   
-  const totalExpected = payPeriods.reduce((sum, pp) => sum + (pp.expected_pay || 0), 0);
   const totalDifference = payPeriods.reduce((sum, pp) => sum + (pp.difference || 0), 0);
   const totalHours = payPeriods.reduce((sum, pp) => sum + (pp.total_hours || 0), 0);
   const totalDeductions = payPeriods.reduce((sum, pp) => sum + ((pp as any).deductions_total || 0), 0);
@@ -103,7 +102,7 @@ export default async function DashboardPage() {
           <p className="text-sm sm:text-base text-gray-600">Track your pay periods and earnings</p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
             <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Earnings</h3>
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${totalEarnings.toFixed(2)}</p>
@@ -117,10 +116,6 @@ export default async function DashboardPage() {
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${netEarnings.toFixed(2)}</p>
           </div>
           <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
-            <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Expected</h3>
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${totalExpected.toFixed(2)}</p>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6 col-span-2 sm:col-span-1">
             <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Hours</h3>
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">{totalHours.toFixed(1)}</p>
           </div>
