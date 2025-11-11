@@ -225,16 +225,16 @@ export default function ManualPage() {
   const expectedPay = totalHours > 0 ? totalHours * hourlyRate : (actualPay ? parseFloat(actualPay) || 0 : 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-3 sm:p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Link
             href="/dashboard"
-            className="text-blue-600 hover:text-blue-800 mb-4 inline-block"
+            className="text-blue-600 hover:text-blue-800 mb-2 sm:mb-4 inline-block text-sm sm:text-base"
           >
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Manual Pay Period</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Manual Pay Period</h1>
         </div>
 
         {toast && (
@@ -255,95 +255,95 @@ export default function ManualPage() {
           </div>
         )}
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-6 space-y-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-4 sm:p-6 space-y-4 sm:space-y-6">
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+            <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm sm:text-base">
               {error}
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Pay Period Start Date {validShifts.length > 0 ? '*' : '(for shifts)'}
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
+                className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 End Date 
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
+                className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Shifts</h2>
+            <div className="flex justify-between items-center mb-3 sm:mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900">Shifts</h2>
               <button
                 onClick={addShift}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-lg"
               >
                 + Add Shift
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {shifts.map((shift, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg p-4">
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div key={index} className="border border-gray-200 rounded-lg p-3 sm:p-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Date</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1.5">Date</label>
                       <input
                         type="date"
                         value={shift.date}
                         onChange={(e) => updateShift(index, 'date', e.target.value)}
-                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Time In</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1.5">Time In</label>
                       <input
                         type="text"
                         value={shift.timeIn}
                         onChange={(e) => updateShift(index, 'timeIn', e.target.value)}
                         placeholder="07:00 AM"
-                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Time Out</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1.5">Time Out</label>
                       <input
                         type="text"
                         value={shift.timeOut}
                         onChange={(e) => updateShift(index, 'timeOut', e.target.value)}
                         placeholder="03:00 PM"
-                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">Hours</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1.5">Hours</label>
                       <input
                         type="number"
                         step="0.01"
                         value={shift.hours}
                         onChange={(e) => updateShift(index, 'hours', parseFloat(e.target.value) || 0)}
-                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                       />
                     </div>
-                    <div className="flex items-end">
+                    <div className="flex items-end sm:items-start">
                       <button
                         onClick={() => removeShift(index)}
-                        className="text-red-600 hover:text-red-800 text-sm font-medium"
+                        className="text-red-600 hover:text-red-800 text-xs sm:text-sm font-medium py-2"
                       >
                         Remove
                       </button>
@@ -354,21 +354,22 @@ export default function ManualPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 bg-gray-50 p-3 sm:p-4 rounded-lg">
             <div>
-              <p className="text-sm text-gray-600">Total Hours</p>
-              <p className="text-2xl font-bold text-gray-900">{totalHours.toFixed(2)}</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-0.5 sm:mb-1">Total Hours</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">{totalHours.toFixed(2)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">
-                {totalHours > 0 ? `Expected Pay ($${hourlyRate}/hr)` : 'Expected Pay'}
+              <p className="text-xs sm:text-sm text-gray-600 mb-0.5 sm:mb-1">
+                <span className="hidden sm:inline">{totalHours > 0 ? `Expected Pay ($${hourlyRate}/hr)` : 'Expected Pay'}</span>
+                <span className="sm:hidden">Expected Pay</span>
               </p>
-              <p className="text-2xl font-bold text-gray-900">${expectedPay.toFixed(2)}</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">${expectedPay.toFixed(2)}</p>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Actual Pay {validShifts.length === 0 ? '*' : '(optional)'}
             </label>
             <input
@@ -377,12 +378,12 @@ export default function ManualPage() {
               value={actualPay}
               onChange={(e) => setActualPay(e.target.value)}
               placeholder="Enter actual pay received"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
+              className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Notes (optional)
             </label>
             <textarea
@@ -390,34 +391,34 @@ export default function ManualPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Add any notes..."
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900"
+              className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
             />
           </div>
 
           {/* Deductions Section */}
           <div>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Deductions (Optional)</h2>
+            <div className="flex justify-between items-center mb-3 sm:mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900">Deductions (Optional)</h2>
               <button
                 onClick={() => setDeductions([...deductions, { date: '', amount: '', reason: '' }])}
-                className="bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2 px-4 rounded-lg"
+                className="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-lg"
               >
                 + Add Deduction
               </button>
             </div>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
               Add any deductions like Zelle transfers, expenses, etc.
             </p>
 
             {deductions.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-2">No deductions added</p>
+              <p className="text-xs sm:text-sm text-gray-400 text-center py-2">No deductions added</p>
             ) : (
               <div className="space-y-3">
                 {deductions.map((deduction, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div key={index} className="border border-gray-200 rounded-lg p-3 sm:p-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Date *</label>
+                        <label className="block text-xs font-medium text-gray-700 mb-1.5">Date *</label>
                         <input
                           type="date"
                           value={deduction.date}
@@ -426,11 +427,11 @@ export default function ManualPage() {
                             updated[index].date = e.target.value;
                             setDeductions(updated);
                           }}
-                          className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Amount *</label>
+                        <label className="block text-xs font-medium text-gray-700 mb-1.5">Amount *</label>
                         <input
                           type="number"
                           step="0.01"
@@ -441,11 +442,11 @@ export default function ManualPage() {
                             setDeductions(updated);
                           }}
                           placeholder="300"
-                          className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Reason *</label>
+                        <label className="block text-xs font-medium text-gray-700 mb-1.5">Reason *</label>
                         <input
                           type="text"
                           value={deduction.reason}
@@ -455,13 +456,13 @@ export default function ManualPage() {
                             setDeductions(updated);
                           }}
                           placeholder="Zelle transfer"
-                          className="w-full px-2 py-1 text-sm border border-gray-300 rounded text-gray-900"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                         />
                       </div>
-                      <div className="flex items-end">
+                      <div className="flex items-end sm:items-start">
                         <button
                           onClick={() => setDeductions(deductions.filter((_, i) => i !== index))}
-                          className="text-red-600 hover:text-red-800 text-sm font-medium"
+                          className="text-red-600 hover:text-red-800 text-xs sm:text-sm font-medium py-2"
                         >
                           Remove
                         </button>
@@ -476,7 +477,7 @@ export default function ManualPage() {
           <button
             onClick={handleSave}
             disabled={loading}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg disabled:opacity-50"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 sm:py-3 px-4 rounded-lg disabled:opacity-50 text-sm sm:text-base transition"
           >
             {loading ? 'Saving...' : 'Save Pay Period'}
           </button>

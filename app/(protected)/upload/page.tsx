@@ -211,21 +211,21 @@ export default function UploadPage() {
               
               <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-6">
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">Start Date</label>
                   <input
                     type="date"
                     value={parsedData.startDate}
                     onChange={(e) => setParsedData({ ...parsedData, startDate: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                    className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">End Date</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">End Date</label>
                   <input
                     type="date"
                     value={parsedData.endDate}
                     onChange={(e) => setParsedData({ ...parsedData, endDate: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                    className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                   />
                 </div>
               </div>
@@ -325,7 +325,7 @@ export default function UploadPage() {
               </div>
 
               <div className="mb-3 sm:mb-4">
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Actual Pay *
                 </label>
                 <input
@@ -334,12 +334,12 @@ export default function UploadPage() {
                   value={actualPay}
                   onChange={(e) => setActualPay(e.target.value)}
                   placeholder="Enter actual pay received"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                  className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                   Notes (optional)
                 </label>
                 <textarea
@@ -347,7 +347,7 @@ export default function UploadPage() {
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Add any notes..."
                   rows={3}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                  className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
                 />
               </div>
 
