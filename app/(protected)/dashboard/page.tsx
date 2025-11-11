@@ -111,9 +111,9 @@ export default async function DashboardPage() {
             <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Deductions</h3>
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">-${totalDeductions.toFixed(2)}</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
+          <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl border-2 border-blue-500/30 p-4 sm:p-5 md:p-7 ring-2 ring-blue-500/10">
             <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Net Earnings</h3>
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">${netEarnings.toFixed(2)}</p>
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">${netEarnings.toFixed(2)}</p>
           </div>
           <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-3 sm:p-4 md:p-6">
             <h3 className="text-xs sm:text-sm font-medium text-gray-500 mb-0.5 sm:mb-1">Total Hours</h3>
