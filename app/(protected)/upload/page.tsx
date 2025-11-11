@@ -209,23 +209,25 @@ export default function UploadPage() {
             <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border border-white/20 p-4 sm:p-6">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Preview</h2>
               
-              <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-6">
-                <div>
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-6 overflow-hidden">
+                <div className="min-w-0">
                   <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">Start Date</label>
                   <input
                     type="date"
                     value={parsedData.startDate}
                     onChange={(e) => setParsedData({ ...parsedData, startDate: e.target.value })}
-                    className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                    className="w-full min-w-0 px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900 box-border"
+                    style={{ maxWidth: '100%' }}
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">End Date</label>
                   <input
                     type="date"
                     value={parsedData.endDate}
                     onChange={(e) => setParsedData({ ...parsedData, endDate: e.target.value })}
-                    className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                    className="w-full min-w-0 px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900 box-border"
+                    style={{ maxWidth: '100%' }}
                   />
                 </div>
               </div>

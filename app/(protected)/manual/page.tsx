@@ -262,8 +262,8 @@ export default function ManualPage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 overflow-hidden">
+            <div className="min-w-0">
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Pay Period Start Date {validShifts.length > 0 ? '*' : '(for shifts)'}
               </label>
@@ -271,10 +271,11 @@ export default function ManualPage() {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                className="w-full min-w-0 px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900 box-border"
+                style={{ maxWidth: '100%' }}
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 End Date 
               </label>
@@ -282,7 +283,8 @@ export default function ManualPage() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                className="w-full min-w-0 px-3 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg text-gray-900 box-border"
+                style={{ maxWidth: '100%' }}
               />
             </div>
           </div>
@@ -300,14 +302,15 @@ export default function ManualPage() {
             <div className="space-y-3 sm:space-y-4">
               {shifts.map((shift, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-3 sm:p-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
-                    <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4 overflow-hidden">
+                    <div className="min-w-0">
                       <label className="block text-xs font-medium text-gray-700 mb-1.5">Date</label>
                       <input
                         type="date"
                         value={shift.date}
                         onChange={(e) => updateShift(index, 'date', e.target.value)}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                        className="w-full min-w-0 px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900 box-border"
+                        style={{ maxWidth: '100%' }}
                       />
                     </div>
                     <div>
@@ -416,8 +419,8 @@ export default function ManualPage() {
               <div className="space-y-3">
                 {deductions.map((deduction, index) => (
                   <div key={index} className="border border-gray-200 rounded-lg p-3 sm:p-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-                      <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 overflow-hidden">
+                      <div className="min-w-0">
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">Date *</label>
                         <input
                           type="date"
@@ -427,7 +430,8 @@ export default function ManualPage() {
                             updated[index].date = e.target.value;
                             setDeductions(updated);
                           }}
-                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900"
+                          className="w-full min-w-0 px-3 py-2 text-sm border border-gray-300 rounded-lg text-gray-900 box-border"
+                          style={{ maxWidth: '100%' }}
                         />
                       </div>
                       <div>
