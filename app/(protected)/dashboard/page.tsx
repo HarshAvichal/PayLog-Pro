@@ -63,11 +63,21 @@ export default async function DashboardPage() {
 
   const monthlyData: Record<string, { month: string; earnings: number; expected: number }> = {};
   payPeriods.forEach((pp) => {
+    // Exclude deduction-only periods from monthly earnings (same logic as totalEarnings)
+    const actualPay = pp.actual_pay || pp.expected_pay || 0;
+    const deductionsTotal = (pp as any).deductions_total || 0;
+    const isDeductionOnly = pp.total_hours === 0 && deductionsTotal > 0 && Math.abs(actualPay - deductionsTotal) < 0.01;
+    
+    // Skip deduction-only periods in monthly earnings calculation
+    if (isDeductionOnly) {
+      return;
+    }
+    
     const month = format(parseISO(pp.start_date), 'MMM yyyy');
     if (!monthlyData[month]) {
       monthlyData[month] = { month, earnings: 0, expected: 0 };
     }
-    monthlyData[month].earnings += pp.actual_pay || pp.expected_pay || 0;
+    monthlyData[month].earnings += actualPay;
     monthlyData[month].expected += pp.expected_pay || 0;
   });
 
